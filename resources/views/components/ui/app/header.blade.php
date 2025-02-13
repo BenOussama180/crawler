@@ -12,7 +12,10 @@
             <div :class="{ 'absolute left-0' : open, 'relative' : !open }"
                 class="flex flex-col justify-start w-full sm:relative sm:flex-row sm:justify-between" x-cloak>
                 @php
-                $navLinks = ['Dashboard' => '/dashboard'];
+                $navLinks = [
+                    'Dashboard' => '/dashboard',
+                    'Settings' => '/parametre',
+                ];
                 @endphp
                 <!-- Navigation Links -->
                 <nav :class="{'flex flex-col bg-white dark:bg-gray-900 relative z-50 w-full h-auto px-4 py-5 left-0 mt-16': open, 'hidden': ! open}"

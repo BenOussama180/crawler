@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\Log;
 
 class CustomCrawlerObserver extends CrawlObserver
 {
+    public function willCrawl(UriInterface $url, ?string $linkText): void
+    {
+        Link::updateOrCreate(
+            ['url' => (string) $url],
+            ['status' => Link::STATUS_PROCESSING]
+        );
+    }
+
     public function crawled(
         UriInterface $url,
         ResponseInterface $response,
@@ -28,6 +36,7 @@ class CustomCrawlerObserver extends CrawlObserver
             'domain' => $domain,
             'publication_time' => now(), // TODO: extract publication time from the page
             'language' => $language,
+            'status' => Link::STATUS_CRAWLED,
         ]);
     }
 
@@ -37,6 +46,11 @@ class CustomCrawlerObserver extends CrawlObserver
         ?UriInterface $foundOnUrl = null,
         ?string $linkText = null,
     ): void {
+        Link::updateOrCreate(
+            ['url' => (string) $url],
+            ['status' => Link::STATUS_FAILED]
+        );
+
         Log::error("Crawl failed for URL: {$url}, Error: {$requestException->getMessage()}");
     }
 }
