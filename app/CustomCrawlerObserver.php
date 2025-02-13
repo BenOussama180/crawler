@@ -8,7 +8,9 @@ use Spatie\Crawler\CrawlObservers\CrawlObserver;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Spatie\Crawler\Crawler;
 
 class CustomCrawlerObserver extends CrawlObserver
 {
