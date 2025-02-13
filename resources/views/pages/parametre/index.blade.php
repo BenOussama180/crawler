@@ -15,9 +15,9 @@ new class extends Component {
 
     public function mount()
     {
-        $config = Auth::user()->crawlerConfig;
-        $this->keywords = implode(', ', $config->keywords);
-        $this->schedule = $config->schedule;
+        $config = Auth::user()->crawlerConfig ?? null;
+        $this->keywords = $config && implode(', ', $config->keywords) ?? '';
+        $this->schedule = $config?->schedule ?? '';
     }
 
     public function save()
@@ -51,7 +51,7 @@ new class extends Component {
     @volt('parametre')
     <div class="flex flex-col items-stretch flex-1 h-100">
         <div class="flex flex-col items-stretch flex-1 pb-5 mx-auto h-100 min-h-[500px] w-full">
-            <div class="relative flex-1 w-full h-100">
+            <div class="relative flex-1 w-full p-4 md:p-0 h-100">
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div class="col-span-1">
                         <div class="bg-white border rounded-lg shadow-sm dark:bg-gray-900/50 border-gray-200/80 dark:border-gray-200/10">
