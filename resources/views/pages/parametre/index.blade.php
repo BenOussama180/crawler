@@ -57,6 +57,7 @@ new class extends Component
         Auth::user()->crawlerConfigs()->where('id', $id)->delete();
         $this->configs = Auth::user()->crawlerConfigs->fresh();
         $this->dispatch('toast', message: 'Deleted Successfully', data: ['position' => 'top-right', 'type' => 'info']);
+        $this->reset(['name', 'keywords', 'schedule']);
     }
 };
 ?>
