@@ -47,8 +47,8 @@ class User extends Authenticatable
     }
 
 
-    public function crawlerConfig()
+    public function crawlerConfigs()
     {
-        return $this->hasOne(CrawlerConfig::class);
+        return $this->hasMany(CrawlerConfig::class);
     }
 }

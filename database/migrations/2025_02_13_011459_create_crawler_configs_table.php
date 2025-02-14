@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('crawler_configs', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
             $table->json('keywords');
             $table->string('schedule');
             $table->foreignIdFor(User::class)->constrained();
