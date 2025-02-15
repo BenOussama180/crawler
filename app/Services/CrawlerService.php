@@ -10,51 +10,44 @@ use Spatie\Crawler\Crawler;
 
 class CrawlerService
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
 
     public function findSourcesWithGoogle($keywords)
     {
-        Cache::remember('google_search_' . md5(implode(',', $keywords)), 3600, function () use ($keywords) {
-            // Récupérer les clés depuis .env
-            $apiKey = env('GOOGLE_API_KEY');
-            $searchEngineId = env('GOOGLE_SEARCH_ENGINE_ID');
+        return Cache::remember('google_search_' . md5(implode(',', $keywords)), 3600, function () use ($keywords) {
+            try {
+                // URL de l'API Google Custom Search
+                $url = "https://www.googleapis.com/customsearch/v1";
 
-            // Encoder les mots-clés pour la requête
-            $query = urlencode(implode(' OR ', $keywords));
+                // Faire la requête HTTP avec Laravel HTTP Facade
+                $response = Http::get($url, [
+                    'q' => urlencode(implode(' OR ', $keywords)),
+                    'key' => env('GOOGLE_API_KEY'),
+                    'cx' => env('GOOGLE_SEARCH_ENGINE_ID')
+                ]);
 
-            // URL de l'API Google Custom Search
-            $url = "https://www.googleapis.com/customsearch/v1?q={$query}&key={$apiKey}&cx={$searchEngineId}";
+                // Vérifier si la requête a réussi
+                if ($response->successful()) {
+                    $data = $response->json(); // Convertir la réponse en tableau associatif
 
-            // Faire la requête HTTP avec Laravel HTTP Facade
-            $response = Http::get($url);
+                    $sources = collect($data['items'])->map(function ($item) {
+                        return [
+                            'url' => $item['link'],
+                            'title' => $item['title'],
+                            'description' => $item['snippet'],
+                            'type' => 'website',
+                        ];
+                    })->toArray();
 
-            // Vérifier si la requête a réussi
-            if ($response->successful()) {
-                $data = $response->json(); // Convertir la réponse en tableau associatif
-
-                $sources = [];
-                foreach ($data['items'] as $item) {
-                    $sources[] = [
-                        'url' => $item['link'],
-                        'title' => $item['title'],
-                        'description' => $item['snippet'],
-                        'type' => 'website',
-                    ];
+                    return $sources;
+                } else {
+                    // Gérer les erreurs de requête
+                    Log::error("Google API request failed: " . $response->status());
+                    return [];
                 }
-
-                return $sources;
-            } else {
-                // Gérer les erreurs de requête
-                Log::error("Google API request failed: " . $response->status());
+            } catch (\Exception $e) {
+                Log::error("An error occurred: " . $e->getMessage());
                 return [];
             }
-            // Logique de recherche ici
         });
     }
 
@@ -66,7 +59,7 @@ class CrawlerService
                     ->acceptNofollowLinks()
                     ->ignoreRobots()
                     ->setTotalCrawlLimit(50)
-                    ->setCrawlObserver(new CustomCrawlerObserver($keywords))
+                    ->setCrawlObserver(new CustomCrawlerObserver())
                     ->startCrawling($source['url']);
             } elseif ($source['type'] === 'rss') {
                 // TODO: Implement RSS scraping
