@@ -14,6 +14,7 @@
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
         "patrickschur/language-detection": "^5.3",
+        "rappasoft/laravel-livewire-tables": "^3.6",
         "spatie/crawler": "^8.4",
         "wireui/wireui": "^2.2"
     },

@@ -20,7 +20,8 @@ new class extends Component {};
     <div class="flex flex-col items-stretch flex-1 h-100">
         <div class="flex flex-col items-stretch flex-1 pb-5 mx-auto h-100 min-h-[500px] w-full">
             <div class="relative flex-1 w-full h-100">
-                testing
+                <livewire:dashboard-links-table />
+
             </div>
         </div>
     </div>
