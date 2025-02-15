@@ -30,7 +30,7 @@ class CrawlSources extends Command
         $crawlerConfigs = CrawlerConfig::all();
 
         foreach ($crawlerConfigs as $config) {
-            ProcessCrawler::dispatch($config)->onQueue('crawlers');
+            ProcessCrawler::dispatch($config);
         }
 
         $this->info('Crawler jobs dispatched successfully.');
