@@ -29,6 +29,11 @@ class CrawlSources extends Command
     {
         $crawlerConfigs = CrawlerConfig::all();
 
+        if ($crawlerConfigs->isEmpty()) {
+            $this->info('No crawler configurations found.');
+            return;
+        }
+
         foreach ($crawlerConfigs as $config) {
             ProcessCrawler::dispatch($config);
         }
