@@ -40,7 +40,13 @@ class CrawlerService
                         ];
                     })->toArray();
 
-                    Source::insert($sources);
+                    // Delete old sources for the given crawler_config_id
+                    if (!Cache::has('google_search_' . md5(implode(',', $keywords)))) {
+                        Source::where('crawler_config_id', $id)->delete();
+                        // Insert new sources
+                        Source::insert($sources);
+                    }
+
 
                     return $sources;
                 } else {
@@ -62,12 +68,9 @@ class CrawlerService
                 Crawler::create()
                     ->acceptNofollowLinks()
                     ->ignoreRobots()
-                    ->setTotalCrawlLimit(50)
+                    ->setTotalCrawlLimit(1)
                     ->setCrawlObserver(new CustomCrawlerObserver())
                     ->startCrawling($source['url']);
-            } elseif ($source['type'] === 'rss') {
-                // TODO: Implement RSS scraping
-                // $this->scrapeRSS($source['url'], $keywords);
             }
             // TODO implement other types of sources
         }

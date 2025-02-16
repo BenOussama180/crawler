@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('sources', function (Blueprint $table) {
             $table->id();
             $table->string('url');
-            $table->string('title');
-            $table->string('description');
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
             $table->string('image')->nullable();
             $table->string('type');
+            $table->string('status')->default('pending');
+            $table->string('language')->nullable();
+            $table->timestamp('publication_time')->nullable();
             $table->foreignIdFor(\App\Models\CrawlerConfig::class);
             $table->timestamps();
         });

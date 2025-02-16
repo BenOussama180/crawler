@@ -13,6 +13,7 @@ class Source extends Model
         'image',
         'type',
         'crawler_config_id',
+        'language'
     ];
 
     public function crawlerConfig()

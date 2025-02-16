@@ -30,7 +30,6 @@ class ProcessCrawler implements ShouldQueue
 
         info('Found ' . count($sources) . ' sources for config: ' . $this->crawlerConfig->id);
 
-        return;
         $crawlerService->crawlForKeywords(
             $this->crawlerConfig->keywords,
             $sources
