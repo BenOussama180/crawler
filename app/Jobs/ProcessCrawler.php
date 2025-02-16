@@ -26,7 +26,7 @@ class ProcessCrawler implements ShouldQueue
     {
         info('Crawling sources for config: ' . $this->crawlerConfig->id);
 
-        $sources = $crawlerService->findSourcesWithGoogle($this->crawlerConfig->keywords);
+        $sources = $crawlerService->findSourcesWithGoogle($this->crawlerConfig->keywords, $this->crawlerConfig->id);
 
         info('Found ' . count($sources) . ' sources for config: ' . $this->crawlerConfig->id);
 

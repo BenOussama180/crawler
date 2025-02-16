@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\CustomCrawlerObserver;
+use App\Models\Source;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -11,9 +12,9 @@ use Spatie\Crawler\Crawler;
 class CrawlerService
 {
 
-    public function findSourcesWithGoogle($keywords)
+    public function findSourcesWithGoogle($keywords, $id)
     {
-        return Cache::remember('google_search_' . md5(implode(',', $keywords)), 3600, function () use ($keywords) {
+        return Cache::remember('google_search_' . md5(implode(',', $keywords)), 3600, function () use ($keywords, $id) {
             try {
                 // URL de l'API Google Custom Search
                 $url = "https://www.googleapis.com/customsearch/v1";
@@ -29,14 +30,17 @@ class CrawlerService
                 if ($response->successful()) {
                     $data = $response->json(); // Convertir la réponse en tableau associatif
 
-                    $sources = collect($data['items'])->map(function ($item) {
+                    $sources = collect($data['items'])->map(function ($item) use ($id) {
                         return [
                             'url' => $item['link'],
                             'title' => $item['title'],
                             'description' => $item['snippet'],
                             'type' => 'website',
+                            'crawler_config_id' => $id
                         ];
                     })->toArray();
+
+                    Source::insert($sources);
 
                     return $sources;
                 } else {

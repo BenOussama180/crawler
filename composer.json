@@ -16,6 +16,7 @@
         "patrickschur/language-detection": "^5.3",
         "rappasoft/laravel-livewire-tables": "^3.6",
         "spatie/crawler": "^8.4",
+        "wire-elements/modal": "^2.0",
         "wireui/wireui": "^2.2"
     },
     "require-dev": {

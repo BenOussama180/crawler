@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('keywords');
             $table->string('schedule');
             $table->foreignIdFor(User::class)->constrained();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
