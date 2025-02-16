@@ -14,7 +14,7 @@
                     {{ $source['status'] }}
                 </span>
                 @if($source['status'] == 'crawled')
-                <a href="{{ asset('storage/articles/'. parse_url($source['url'], PHP_URL_HOST))}}" target="_blank"
+                <a href="{{ asset('storage/articles/'. parse_url($source['url'], PHP_URL_HOST))}}" download
                     class="ml-2 text-blue-500 hover:underline">Download File</a>
                 @endif
             </div>
