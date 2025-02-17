@@ -47,8 +47,7 @@ class DashboardLinksTable extends DataTableComponent
             Column::make('Sources Information')
                 ->label(
                     function ($row) {
-                        $sources = htmlspecialchars(json_encode($row->sources), ENT_QUOTES, 'UTF-8');
-                        return '<button class="px-1.5 py-2 bg-black text-white rounded-md" wire:click="$dispatch(\'openModal\', { component: \'show-sources-modal\', arguments: { sources: ' . $sources . ' } })">Show Sources</button>';
+                        return '<button class="px-1.5 py-2 bg-black text-white rounded-md" wire:click="$dispatch(\'openModal\', { component: \'show-sources-modal\', arguments: { config: ' . $row->id . ' } })">Show Sources</button>';
                     }
                 )
                 ->html(),

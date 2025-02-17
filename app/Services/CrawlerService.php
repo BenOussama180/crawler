@@ -72,7 +72,10 @@ class CrawlerService
                     ->setCrawlObserver(new CustomCrawlerObserver())
                     ->startCrawling($source['url']);
             }
-            // TODO implement other types of sources
+            // TODO implement other types of sources eg: social media, news, etc.
         }
+
+        // when all sources are crawled, update the status of the crawler config
+        // CrawlerConfig::find($id)->update(['status' => CrawlerConfig::STATUS_CRAWLED]);
     }
 }
